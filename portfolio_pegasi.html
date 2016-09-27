@@ -1086,7 +1086,7 @@
     </div>
 </div>
 <p>
-    <button id="load-images">Load images</button>
+
     
     <script src="//masonry.desandro.com/masonry.pkgd.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.0.4/jquery.imagesloaded.js"></script>
@@ -1117,58 +1117,7 @@
         
         
         
-        
-        
-        
-        <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Responsive Bootstrap image Gallery</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-<style type="text/css">
-.container { width: auto; }
-.row-centered { text-align: center; }
-.col-centered { display: inline-block; float:none; text-align: left; margin: 10px; }
-</style>
-</head>
-<body>
-<div class="container row-centered">
-<ul class="row list-unstyled">
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/1.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/2.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/3.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/4.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/5.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/6.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/7.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/8.png" class="img-pos img-responsive" />
-</li>
-<li class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-centered">
-<img src="images/9.png" class="img-pos img-responsive" />
-</li>
-</ul>
-</div>
-</body>
-</html>
-        
-        
-        
+    
         
         
         
@@ -1569,5 +1518,38 @@
 	<script src="assets/plugins/html5shiv.js"></script>
 	<script src="assets/plugins/placeholder-IE-fixes.js"></script>
 	<![endif]-->
+    
+    $(function () {
+
+    var $container = $('#container').masonry({
+        itemSelector: '.item',
+        columnWidth: 200
+    });
+
+    // reveal initial images
+    $container.masonryImagesReveal($('#images').find('.item'));
+});
+
+$.fn.masonryImagesReveal = function ($items) {
+    var msnry = this.data('masonry');
+    var itemSelector = msnry.options.itemSelector;
+    // hide by default
+    $items.hide();
+    // append to container
+    this.append($items);
+    $items.imagesLoaded().progress(function (imgLoad, image) {
+        // get item
+        // image is imagesLoaded class, not <img>, <img> is image.img
+        var $item = $(image.img).parents(itemSelector);
+        // un-hide item
+        $item.show();
+        // masonry does its thing
+        msnry.appended($item);
+    });
+
+    return this;
+};    
+    
+    
 </body>
 </html>
